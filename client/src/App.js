@@ -37,7 +37,7 @@ function App() {
       <Route path='/images' element={<Deliveryimages/>}></Route>
       <Route path='/feedback' element={<Feedback/>}></Route>
       <Route path='/charts' element={<Charts/>}></Route>
-      <Route path='//deliveryfeedback' element={<Deliveryfeedback/>}></Route>
+      <Route path='/deliveryfeedback' element={<Deliveryfeedback/>}></Route>
       
     </Routes>
     </BrowserRouter>

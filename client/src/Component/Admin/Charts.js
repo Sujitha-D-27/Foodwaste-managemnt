@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Chart from 'chart.js/auto';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function GraphicalRepresentation() {
   const [donatorData, setDonatorData] = useState([]);
@@ -23,12 +41,6 @@ function GraphicalRepresentation() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (donatorData.length > 0 && deliveryPersonData.length > 0) {
-      renderCharts();
-    }
-  }, [donatorData, deliveryPersonData]);
-
   const renderCharts = () => {
     const donatorLabels = donatorData.map(item => item.username);
     const donatorCounts = donatorData.map(item => item.donation_count);
@@ -36,58 +48,61 @@ function GraphicalRepresentation() {
     const deliveryPersonLabels = deliveryPersonData.map(item => item.username);
     const deliveryPersonCounts = deliveryPersonData.map(item => item.delivery_count);
 
-    const donatorCtx = document.getElementById('donatorChart').getContext('2d');
-    new Chart(donatorCtx, {
-      type: 'bar',
-      data: {
-        labels: donatorLabels,
-        datasets: [{
-          label: 'Donation Count',
-          data: donatorCounts,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+    const donatorDataSet = {
+      labels: donatorLabels,
+      datasets: [{
+        label: 'Donations',
+        data: donatorCounts,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
+    };
 
-    const deliveryPersonCtx = document.getElementById('deliveryPersonChart').getContext('2d');
-    new Chart(deliveryPersonCtx, {
-      type: 'bar',
-      data: {
-        labels: deliveryPersonLabels,
-        datasets: [{
-          label: 'Delivery Count',
-          data: deliveryPersonCounts,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+    const deliveryPersonDataSet = {
+      labels: deliveryPersonLabels,
+      datasets: [{
+        label: 'Deliveries',
+        data: deliveryPersonCounts,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    return (
+      <div>
+        <h2>Donators</h2>
+        <Bar
+          data={donatorDataSet}
+          options={{
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }}
+        />
+
+        <h2>Delivery Persons</h2>
+        <Bar
+          data={deliveryPersonDataSet}
+          options={{
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }}
+        />
+      </div>
+    );
   };
 
   return (
     <div>
-      <h2>Donators</h2>
-      <canvas id="donatorChart"></canvas>
-
-      <h2>Delivery Persons</h2>
-      <canvas id="deliveryPersonChart"></canvas>
+      {error && <div>Error: {error.message}</div>}
+      {donatorData.length > 0 && deliveryPersonData.length > 0 ? renderCharts() : <p>Loading data...</p>}
     </div>
   );
 }

@@ -30,12 +30,12 @@ const Donate = () => {
         email
       });
       toast.success("Your donation has been submitted successfully!");
-      console.log(response.data[0].id);
-      const userId=response.data[0].id
-      localStorage.setItem("userId",userId);
+      console.log(response.data.id);
+      const userId = response.data[0].id;
+      localStorage.setItem("userId", userId);
     } catch (error) {
-      console.error('Error submitting donatiosss:', error);
-      // toast.error("There was an error submitting your donation.");
+      console.error('Error submitting donation:', error.response ? error.response.data : error.message);
+      toast.error("There was an error submitting your donation.");
     }
   };
 

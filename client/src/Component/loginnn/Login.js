@@ -28,6 +28,9 @@ const Login = () => {
         navigate('/dhome');
         console.log('Redirecting to Delivery Home Page');
       }
+      else{
+        navigate('/admin');
+      }
     } catch (error) {
       if (error.response) {
         console.error('Error response:', error.response.data);

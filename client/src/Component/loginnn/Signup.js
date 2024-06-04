@@ -23,7 +23,7 @@ function Signup() {
   else{
     
     try {
-      const response = await axios.post('http://localhost:5000/Dsign', { username, email, password });
+      const response = await axios.post('http://localhost:5000/sign', { username, email, password });
       
       console.log(response.data);
       navigate('/main'); // Handle success response

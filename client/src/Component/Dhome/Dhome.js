@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Foodimage from '../Images/Food.png'; // Importing the image
 import { useNavigate } from 'react-router-dom';
-
+import donateees from '../Images/dpi.png';
 function Dhome() {
   const [deliveryData, setDeliveryData] = useState(null);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('');
   const deliveryLocation = localStorage.getItem("location");
-
+  const deliverypersonid = localStorage.getItem("deliverypersonid");
   useEffect(() => {
     const fetchDeliveryData = async () => {
       try {
@@ -30,9 +30,11 @@ function Dhome() {
       try {
         const response = await axios.post("http://localhost:5000/dstatus", {
           donation_id: donation_id,
-          status: status
+          status: status,
+          
         });
         console.log(response);
+        toast.success("status updated successfully");
       } catch (err) {
         console.log(err);
       }
@@ -46,8 +48,8 @@ function Dhome() {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-slate-600">
-      {error && <div>Error: {error.message}</div>}
+    <div className="max-w-md mx-auto">
+      
       {deliveryData ? (
         <div className="bg-white shadow-md rounded-md overflow-hidden">
           <div className="flex justify-center">
@@ -84,8 +86,10 @@ function Dhome() {
           </div>
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className='text-center font-serif font-extrabold text-4xl'><h1>No more donations!!!</h1>
+        <img className='max-w-md' src={donateees}alt=""></img></div>
       )}
+      <ToastContainer />
     </div>
   );
 }

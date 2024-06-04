@@ -61,7 +61,7 @@ function Profile() {
                   <td className="py-2 px-4 border-b">{donation.category}</td>
                   <td className="py-2 px-4 border-b">{donation.quantity}</td>
                   <td className="py-2 px-4 border-b">{donation.serves}</td>
-                  <td className="py-2 px-4 border-b">{donation.date}</td>
+                  <td className="py-2 px-4 border-b">{new Date(donation.date).toLocaleString()}</td>
                   <td className="py-2 px-4 border-b">{donation.address}</td>
                   <td className="py-2 px-4 border-b">{donation.mobile_no}</td>
                   <td className="py-2 px-4 border-b">{donation.status}</td>

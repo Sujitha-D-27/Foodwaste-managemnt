@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import hero from "../Images/donate.jpg";
+import hero from "../Images/Donation.gif";
 import { useNavigate } from 'react-router-dom';
 import About from '../About/About';
 import Bot from '../Bot/Bot';

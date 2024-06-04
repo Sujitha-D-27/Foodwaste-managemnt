@@ -91,20 +91,43 @@ app.post("/Deliverydetail",(req,res)=>{
     })
 
 })
-app.post('/dstatus',(req,res)=>{
-    const donation_id=req.body.donation_id;
-    const status=req.body.status;
-    const sql = 'UPDATE donations SET status = ? WHERE donation_id = ?';
-    db.query(sql,[status,donation_id],(err,data)=>{
+app.post('/dstatus', (req, res) => {
+    const donation_id = req.body.donation_id;
+    const status = req.body.status;
+
+    // First, check the current status of the donation
+    const checkSql = 'SELECT status FROM donations WHERE donation_id = ?';
+    db.query(checkSql, [donation_id], (err, results) => {
         if (err) {
             console.log(err);
-            res.status(500).send('Error in database operation');
-        } else {
-           
-            res.status(200).send("status updated successfully");
+            return res.status(500).send('Error in database operation');
         }
-    })
-})
+
+        if (results.length === 0) {
+            return res.status(404).send('Donation not found');
+        }
+
+        const currentStatus = results[0].status;
+
+        // If the status is already 'pick up food', prevent the update
+        if (currentStatus === 'pick up food' && status === 'pick up food') {
+            return res.status(400).send('This donation has already been picked up by someone else.');
+        }
+
+        // If the status is not 'pick up food', allow the update
+        const updateSql = 'UPDATE donations SET status = ? WHERE donation_id = ?';
+        db.query(updateSql, [status, donation_id], (err, data) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Error in database operation');
+            }
+
+            res.status(200).send('Status updated successfully');
+        });
+    });
+});
+
+
 app.get('/admin/donators', (req, res) => {
     const sql = `
       SELECT users.username, users.email, donations.foodname, donations.foodtype, donations.category, donations.quantity, donations.serves, donations.date, donations.address, donations.mobile_no, donations.status
@@ -126,29 +149,28 @@ app.get('/admin/donators', (req, res) => {
       FROM 
         delivery dp
       LEFT JOIN 
-        donations d ON dp.id = d.userId
+        donations d ON dp.location = d.address
       WHERE 
         d.status IN ('pick up food', 'Delivered food')
     `;
     
     db.query(sql, (err, results) => {
       if (err) {
-        return res.status(500).send(err);
+        console.error('Error in database operation:', err);
+        return res.status(500).send('Error in database operation');
       }
   
-      const deliveryPersons = {};
-  
-      results.forEach(row => {
-        if (!deliveryPersons[row.username]) {
-          deliveryPersons[row.username] = {
+      // Transform the results into the desired format
+      const deliveryPersons = results.reduce((acc, row) => {
+        if (!acc[row.username]) {
+          acc[row.username] = {
             username: row.username,
             email: row.email,
             donations: []
           };
         }
-  
         if (row.foodname) {
-          deliveryPersons[row.username].donations.push({
+          acc[row.username].donations.push({
             foodname: row.foodname,
             foodtype: row.foodtype,
             category: row.category,
@@ -160,12 +182,13 @@ app.get('/admin/donators', (req, res) => {
             status: row.status
           });
         }
-      });
+        return acc;
+      }, {});
   
       res.send(Object.values(deliveryPersons));
     });
   });
-
+  
 // Register user
 app.post('/sign', (req, res) => {
     const { username, email, password } = req.body;
@@ -277,10 +300,13 @@ app.post('/donate', (req, res) => {
                 res.status(500).send('Internal Server Error');
                 return;
             }
+
+            res.status(200).send([{ id: userId }]);
         });
-        res.status(200).send(userResult);
     });
 });
+
+
 
 app.get('/pro/:userId', (req, res) => {
     const userId = req.params.userId;
