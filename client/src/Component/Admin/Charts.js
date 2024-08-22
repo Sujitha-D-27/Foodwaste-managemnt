@@ -28,10 +28,10 @@ function GraphicalRepresentation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const donatorResponse = await axios.get("http://localhost:5000/admin/donators");
+        const donatorResponse = await axios.get("https://foodaid.onrender.com/admin/donators");
         setDonatorData(donatorResponse.data);
 
-        const deliveryPersonResponse = await axios.get("http://localhost:5000/admin/delivery-persons");
+        const deliveryPersonResponse = await axios.get("https://foodaid.onrender.com/admin/delivery-persons");
         setDeliveryPersonData(deliveryPersonResponse.data);
       } catch (err) {
         setError(err);

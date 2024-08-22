@@ -7,7 +7,7 @@ const Donators = () => {
   useEffect(() => {
     const fetchDonators = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/admin/donators');
+        const response = await axios.get('https://foodaid.onrender.com/admin/donators');
         setDonators(response.data);
       } catch (error) {
         console.error('Error fetching donators:', error);

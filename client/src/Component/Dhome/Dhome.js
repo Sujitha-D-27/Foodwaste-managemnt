@@ -14,7 +14,7 @@ function Dhome() {
   useEffect(() => {
     const fetchDeliveryData = async () => {
       try {
-        const response = await axios.post("http://localhost:5000/Deliverydetail", { deliveryLocation });
+        const response = await axios.post("https://foodaid.onrender.com/Deliverydetail", { deliveryLocation });
         setDeliveryData(response.data);
       } catch (err) {
         setError(err);
@@ -28,7 +28,7 @@ function Dhome() {
     if (deliveryData && deliveryData.status !== "pick up food") {
       const donation_id = deliveryData.donation_id;
       try {
-        const response = await axios.post("http://localhost:5000/dstatus", {
+        const response = await axios.post("https://foodaid.onrender.com/dstatus", {
           donation_id: donation_id,
           status: status,
           

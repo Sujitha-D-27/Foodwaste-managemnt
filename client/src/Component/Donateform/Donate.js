@@ -18,7 +18,7 @@ const Donate = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/donate', {
+      const response = await axios.post('https://foodaid.onrender.com/donate', {
         fname,
         foodtype,
         category,

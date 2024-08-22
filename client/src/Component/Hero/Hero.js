@@ -4,7 +4,8 @@ import hero from "../Images/Donation.gif";
 import { useNavigate } from 'react-router-dom';
 import About from '../About/About';
 import Bot from '../Bot/Bot';
-import Contact from '../Contact/Contact';
+import Contact from '../Contact/contact';
+
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Hero = () => {
           <Bot />
         </div>
         <div id="contact">
-          <Contact />
+         <Contact/>
         </div>
       </div>
     </div>

@@ -9,10 +9,10 @@ function Feedback() {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const donatorResponse = await axios.get("http://localhost:5000/feedback/mail");
+        const donatorResponse = await axios.get("https://foodaid.onrender.com/feedback/mail");
         setDonatorFeedback(donatorResponse.data);
 
-        const deliveryPersonResponse = await axios.get("http://localhost:5000/deliverer/feedback");
+        const deliveryPersonResponse = await axios.get("https://foodaid.onrender.com/deliverer/feedback");
         setDeliveryPersonFeedback(deliveryPersonResponse.data);
       } catch (err) {
         setError(err);

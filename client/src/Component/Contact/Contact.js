@@ -10,7 +10,7 @@ function Contact() {
   const sendmail=(e)=>{
     e.preventDefault();
     try {
-      const response =axios.post('http://localhost:5000/mail', { 
+      const response =axios.post('https://foodaid.onrender.com/mail', { 
         username:username, 
         email:email,
         message:message  });

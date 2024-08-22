@@ -10,7 +10,7 @@ function Deliveryfeedback() {
   const sendmail=(e)=>{
     e.preventDefault();
     try {
-      const response =axios.post('http://localhost:5000/deliverer/feedback', { 
+      const response =axios.post('https://foodaid.onrender.com/feedback', { 
         username:username, 
         email:email,
         message:message  });
