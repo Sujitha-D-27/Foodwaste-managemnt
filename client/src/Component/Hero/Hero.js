@@ -4,7 +4,7 @@ import hero from "../Images/Donation.gif";
 import { useNavigate } from 'react-router-dom';
 import About from '../About/About';
 import Bot from '../Bot/Bot';
-import Contact from '../Contact/contact';
+import Contact from '../Contact/Contact';
 
 
 const Hero = () => {
